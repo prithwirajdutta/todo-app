@@ -1,2 +1,1 @@
-# todo-app
-using reactjs
+Todo App Using React Js and Bootstrap 4
