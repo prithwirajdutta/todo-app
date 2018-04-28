@@ -1,61 +1,51 @@
-import React from'react';
-class Simpletodo extends React.Component {
-	constructor(props){
-  super(props);
-  }
-  render(){
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends React.Component{
+	state = {
+		todos:[],
+		ctodo:''
+	}
+	addtodo = () => {
+		let c = this.state.todos.slice();
+		c.push(this.state.ctodo);
+		this.setState({
+			todos:c,
+			ctodo:''
+		});
+	}
+	handleChange = (e) => {
+		this.setState({ctodo:e.target.value});
+	}
+	deletetodo = (i) => {
+		let d = this.state.todos.slice();
+		d.splice(i,1);
+		this.setState({
+			todos:d,
+			ctodo:''
+		});
+	}
+	render(){
+		let b = this.state.todos.map((e,i) => {
+			return(
+				<li key={i}><h1>{e}<span onClick={() => {this.deletetodo(i)}}>x</span></h1></li>
+		);
+	});
   	return(
-    	<div>
-    	  <li key = {this.props.id}>{this.props.todo}<button onClick={this.props.delete}>x</button></li>
+    	<div className="container" id="cont1">
+			<center><h1>Todo App :)</h1></center><br></br>
+				<div className="row">
+				<div className="col-md-10">
+        <input type="text" value={this.state.ctodo} onChange={this.handleChange} placeholder="enter a new todo :)" className="form-control" />
+				</div>
+				<div className="col-md-2">
+				<button className="btn btn-light" onClick={this.addtodo}>Add Todo</button>
+				</div></div>
+				<br></br>
+					{this.state.todos.length === 0 ? <h1>No todos yet !</h1> : <ul>{b}</ul>}
     	</div>
     );
   }
 }
 
-class App extends React.Component {
-	constructor(props){
-  	super(props);
-    this.state={
-    	todos:[],
-      ctodo:''
-    }
-  }
-  handleChange = (e) => {
-  	this.setState({
-    	ctodo:e.target.value
-    })
-  }
-  handleClick = () => {
-  	let c = this.state.todos.slice();
-    c.push(this.state.ctodo);
-    this.setState({
-    	todos:c,
-      ctodo:''
-    });
-  }
-  deletetodo = (i) => {
-  	let m = this.state.todos.slice();
-    m.splice(i,1);
-    this.setState({
-    	todos:m,
-      ctodo:''
-    });
-  }
-  render(){
-  let b = this.state.todos.map((e,i) => {
-  	return(
-   // <li key = {i}>{e}<button onClick={() => this.deletetodo(i)}>x</button></li>
-   <Simpletodo id={i} todo={e} delete={() => this.deletetodo(i)}/>
-    )
-  });
-  	return(
-    	<div>
-    	  <input type="text" value={this.state.ctodo} onChange={this.handleChange} />
-        <button onClick={this.handleClick}>Add</button>
-        <h2>{this.state.todos.length == 0 ? "no todos yet" : <ul>{b}</ul>}</h2>
-    	</div>
-    );
-  }
-
-}
-ReactDOM.render(<App/>,document.getElementById('mountNode'));
+export default App;
